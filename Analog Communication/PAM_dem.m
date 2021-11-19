@@ -1,0 +1,22 @@
+fs = 50;
+ts = 1/(fs*500);
+t1=1/fs;
+%duty cycle should be 10% of t1
+duty=0.002;
+t = 0:ts:2;
+fm = 10;
+am = 1;
+ym = am * sin(2*pi*fm*t);
+ac = 0.5;
+%yc = pulstran(t,d,x);
+yc = 0.5+(ac*square(2*pi*fs.*t,duty));
+y = ym.*yc;
+plot(t,y);
+Fs = 15000;
+wn = fm/Fs;
+[a,b] = butter(2,wn,'low');
+figure(2);
+plot(t,filter(a,b,y));
+xlabel('Time');
+ylabel('Amplitude');
+title('Reconstructed signal');
